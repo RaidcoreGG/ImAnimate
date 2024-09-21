@@ -9,15 +9,18 @@ void Animate(float aStartValue, float aEndValue, double aDurationMs, float* aVal
 ```
 The parameter `aCurve` is both the out parameter as usual with ImGui and the current value.
 
-**Example hover animation**
+**Example: Hover Animation**  
+![hover_animation_example](https://github.com/user-attachments/assets/bdd7c943-0f4d-400e-b95d-29e9e3e296d4)  
 ```cpp
+static float imgSize = 1.0f;
+ImGui::Image(icon, ImVec2(imgSize, imgSize));
 if (ImGui::IsItemHovered)
 {
-    ImGui::Animate(1000, 1500, 500, &hoverSize, ECurve::InOutSine);
+    ImGui::Animate(1.0f, 1.1f, 500, &imgSize, ECurve::InCubic);
 }
 else
 {
-    ImGui::Animate(1500, 1000, 500, &hoverSize, ECurve::InOutSine);
+    ImGui::Animate(1.1f, 1.0, 500, &imgSize, ECurve::OutCubic);
 }
 ```
 You don't need to track any current value, animation start or state.  
