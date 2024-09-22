@@ -20,11 +20,11 @@ static float imgSize = 1.0f;
 ImGui::Image(icon, ImVec2(imgSize, imgSize));
 if (ImGui::IsItemHovered)
 {
-    ImGui::Animate(1.0f, 1.1f, 500, &imgSize, ECurve::InCubic);
+	ImGui::Animate(1.0f, 1.1f, 500, &imgSize, ECurve::InCubic);
 }
 else
 {
-    ImGui::Animate(1.1f, 1.0, 500, &imgSize, ECurve::OutCubic);
+	ImGui::Animate(1.1f, 1.0, 500, &imgSize, ECurve::OutCubic);
 }
 ```
 
@@ -32,35 +32,35 @@ else
 The following easing functions are currently implemented.
 ```cpp
 enum class ECurve
-	{
-		Linear,
+{
+	Linear,
 
-		InSine,
-		OutSine,
-		InOutSine,
+	InSine,
+	OutSine,
+	InOutSine,
 
-		InQuad,
-		OutQuad,
-		InOutQuad,
+	InQuad,
+	OutQuad,
+	InOutQuad,
 
-		InCubic,
-		OutCubic,
-		InOutCubic,
+	InCubic,
+	OutCubic,
+	InOutCubic,
 
-		InQuart,
-		OutQuart,
-		InOutQuart,
+	InQuart,
+	OutQuart,
+	InOutQuart,
 
-		InQuint,
-		OutQuint,
-		InOutQuint,
+	InQuint,
+	OutQuint,
+	InOutQuint,
 
-		InExpo,
-		OutExpo,
-		InOutExpo,
+	InExpo,
+	OutExpo,
+	InOutExpo,
 
-		InCirc,
-		OutCirc,
-		InOutCirc
-	};
+	InCirc,
+	OutCirc,
+	InOutCirc
+};
 ```
