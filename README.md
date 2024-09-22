@@ -27,3 +27,40 @@ else
     ImGui::Animate(1.1f, 1.0, 500, &imgSize, ECurve::OutCubic);
 }
 ```
+
+## Easing functions
+The following easing functions are currently implemented.
+```cpp
+enum class ECurve
+	{
+		Linear,
+
+		InSine,
+		OutSine,
+		InOutSine,
+
+		InQuad,
+		OutQuad,
+		InOutQuad,
+
+		InCubic,
+		OutCubic,
+		InOutCubic,
+
+		InQuart,
+		OutQuart,
+		InOutQuart,
+
+		InQuint,
+		OutQuint,
+		InOutQuint,
+
+		InExpo,
+		OutExpo,
+		InOutExpo,
+
+		InCirc,
+		OutCirc,
+		InOutCirc
+	};
+```
