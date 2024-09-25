@@ -60,7 +60,7 @@ namespace ImGui
 	///     - aValue: Is the out/current value.
 	///     - aCurve: Is of type ImAnimate::ECurve and is the easing curve used for this animation.
 	///----------------------------------------------------------------------------------------------------
-	void Animate(float aStartValue, float aEndValue, double aDurationMs, float* aValue, ImAnimate::ECurve aCurve = ImAnimate::ECurve::Linear);
+	void Animate(float aStartValue, float aEndValue, float aDurationMs, float* aValue, ImAnimate::ECurve aCurve = ImAnimate::ECurve::Linear);
 }
 
 #endif

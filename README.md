@@ -8,7 +8,7 @@ You just provide your start and end values, as well as the duration in milliseco
 
 **Function Signature**
 ```cpp
-void Animate(float aStartValue, float aEndValue, double aDurationMs, float* aValue, ECurve aCurve = ECurve::Linear);
+void Animate(float aStartValue, float aEndValue, float aDurationMs, float* aValue, ECurve aCurve = ECurve::Linear);
 ```
 
 **Example: Hover Animation**

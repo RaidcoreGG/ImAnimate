@@ -35,7 +35,7 @@ namespace ImAnimate
 	}
 	float CurveFunc_InOutQuad(float aProgress)
 	{
-		return aProgress < 0.5 ? 2 * aProgress * aProgress : 1 - pow(-2 * aProgress + 2, 2) / 2;
+		return aProgress < 0.5f ? 2 * aProgress * aProgress : 1 - powf(-2 * aProgress + 2, 2) / 2.0f;
 	}
 
 	float CurveFunc_InCubic(float aProgress)
@@ -44,11 +44,11 @@ namespace ImAnimate
 	}
 	float CurveFunc_OutCubic(float aProgress)
 	{
-		return 1 - pow(1 - aProgress, 3);
+		return 1 - powf(1 - aProgress, 3);
 	}
 	float CurveFunc_InOutCubic(float aProgress)
 	{
-		return aProgress < 0.5 ? 4 * aProgress * aProgress * aProgress : 1 - pow(-2 * aProgress + 2, 3) / 2;
+		return aProgress < 0.5f ? 4 * aProgress * aProgress * aProgress : 1 - powf(-2 * aProgress + 2, 3) / 2.0f;
 	}
 
 	float CurveFunc_InQuart(float aProgress)
@@ -57,11 +57,11 @@ namespace ImAnimate
 	}
 	float CurveFunc_OutQuart(float aProgress)
 	{
-		return 1 - pow(1 - aProgress, 4);
+		return 1 - powf(1 - aProgress, 4);
 	}
 	float CurveFunc_InOutQuart(float aProgress)
 	{
-		return aProgress < 0.5 ? 8 * aProgress * aProgress * aProgress * aProgress : 1 - pow(-2 * aProgress + 2, 4) / 2;
+		return aProgress < 0.5f ? 8 * aProgress * aProgress * aProgress * aProgress : 1 - powf(-2 * aProgress + 2, 4) / 2.0f;
 	}
 
 	float CurveFunc_InQuint(float aProgress)
@@ -70,37 +70,37 @@ namespace ImAnimate
 	}
 	float CurveFunc_OutQuint(float aProgress)
 	{
-		return 1 - pow(1 - aProgress, 5);
+		return 1 - powf(1 - aProgress, 5);
 	}
 	float CurveFunc_InOutQuint(float aProgress)
 	{
-		return aProgress < 0.5 ? 16 * aProgress * aProgress * aProgress * aProgress * aProgress : 1 - pow(-2 * aProgress + 2, 5) / 2;
+		return aProgress < 0.5f ? 16 * aProgress * aProgress * aProgress * aProgress * aProgress : 1 - powf(-2 * aProgress + 2, 5) / 2.0f;
 	}
 
 	float CurveFunc_InExpo(float aProgress)
 	{
-		return aProgress == 0 ? 0 : pow(2, 10 * aProgress - 10);
+		return aProgress == 0 ? 0 : powf(2, 10 * aProgress - 10);
 	}
 	float CurveFunc_OutExpo(float aProgress)
 	{
-		return aProgress == 1 ? 1 : 1 - pow(2, -10 * aProgress);
+		return aProgress == 1 ? 1 : 1 - powf(2, -10 * aProgress);
 	}
 	float CurveFunc_InOutExpo(float aProgress)
 	{
-		return aProgress == 0 ? 0 : aProgress == 1 ? 1 : aProgress < 0.5 ? pow(2, 20 * aProgress - 10) / 2 : (2 - pow(2, -20 * aProgress + 10)) / 2;
+		return aProgress == 0 ? 0 : aProgress == 1 ? 1 : aProgress < 0.5 ? powf(2, 20 * aProgress - 10) / 2.0f : (2 - powf(2, -20 * aProgress + 10)) / 2.0f;
 	}
 
 	float CurveFunc_InCirc(float aProgress)
 	{
-		return 1 - sqrt(1 - pow(aProgress, 2));
+		return 1 - sqrt(1 - powf(aProgress, 2));
 	}
 	float CurveFunc_OutCirc(float aProgress)
 	{
-		return sqrt(1 - pow(aProgress - 1, 2));
+		return sqrt(1 - powf(aProgress - 1, 2));
 	}
 	float CurveFunc_InOutCirc(float aProgress)
 	{
-		return aProgress < 0.5 ? (1 - sqrt(1 - pow(2 * aProgress, 2))) / 2 : (sqrt(1 - pow(-2 * aProgress + 2, 2)) + 1) / 2;
+		return aProgress < 0.5f ? (1 - sqrt(1 - powf(2 * aProgress, 2))) / 2.0f : (sqrt(1 - powf(-2 * aProgress + 2, 2)) + 1) / 2.0f;
 	}
 
 	typedef float(*PFN_CURVEFUNC)(float);
@@ -152,7 +152,7 @@ namespace ImAnimate
 
 namespace ImGui
 {
-	void Animate(float aStartValue, float aEndValue, double aDurationMs, float* aValue, ImAnimate::ECurve aCurve)
+	void Animate(float aStartValue, float aEndValue, float aDurationMs, float* aValue, ImAnimate::ECurve aCurve)
 	{
 		auto& anim = ImAnimate::Animations[aValue];
 
@@ -185,7 +185,7 @@ namespace ImGui
 
 		anim.ChangeTime = now;
 
-		float progress = (anim.ChangeTime - anim.StartTime) / aDurationMs;
+		float progress = (float)((anim.ChangeTime - anim.StartTime) / aDurationMs);
 		if (progress > 1.0f) { progress = 1.0f; }
 		else if (progress < 0.0f) { progress = 0.0f; }
 	
