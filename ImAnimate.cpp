@@ -161,6 +161,36 @@ namespace ImGui
 			anim.StartTime = 0;
 			return;
 		}
+		else if (aEndValue > aStartValue)
+		{
+			if (*aValue > aEndValue)
+			{
+				*aValue = aEndValue;
+				anim.StartTime = 0;
+				return;
+			}
+			else if (*aValue < aStartValue)
+			{
+				*aValue = aStartValue;
+				anim.StartTime = 0;
+				return;
+			}
+		}
+		else if (aEndValue < aStartValue)
+		{
+			if (*aValue < aEndValue)
+			{
+				*aValue = aEndValue;
+				anim.StartTime = 0;
+				return;
+			}
+			else if (*aValue > aStartValue)
+			{
+				*aValue = aStartValue;
+				anim.StartTime = 0;
+				return;
+			}
+		}
 
 		float range = abs(anim.EndValue - anim.StartValue);
 
