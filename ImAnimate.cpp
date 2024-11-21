@@ -153,17 +153,17 @@ namespace ImAnimate
 	/// Clamp:
 	///     Internal function to ensure a value is within range.
 	///----------------------------------------------------------------------------------------------------
-	float Clamp(float& aValue, float& aLimit, float& aLimit2)
+	float Clamp(const float& aValue, const float& aLimit, const float& aLimit2)
 	{
 		if (aLimit > aLimit2)
 		{
-			if (aValue > aLimit) { aValue = aLimit; }
-			else if (aValue < aLimit2) { aValue = aLimit2; }
+			if (aValue > aLimit) { return aLimit; }
+			else if (aValue < aLimit2) { return aLimit2; }
 		}
 		else if (aLimit < aLimit2)
 		{
-			if (aValue < aLimit) { aValue = aLimit; }
-			else if (aValue > aLimit2) { aValue = aLimit2; }
+			if (aValue < aLimit) { return aLimit; }
+			else if (aValue > aLimit2) { return aLimit2; }
 		}
 		else /* if (aLimit == aLimit2) */
 		{
