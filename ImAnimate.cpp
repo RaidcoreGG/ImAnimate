@@ -196,7 +196,7 @@ namespace ImGui
 			return;
 		}
 
-		float range = abs(anim.EndValue - anim.StartValue);
+		float range = abs(aEndValue - aStartValue);
 
 		float currProgressVal = abs(*aValue - aStartValue) / range;
 
@@ -204,7 +204,13 @@ namespace ImGui
 
 		double now = ctx->Time * 1000.0f;
 
-		if (anim.StartTime != 0 && (anim.StartValue != aStartValue || anim.EndValue != aEndValue))
+		if (anim.StartTime == 0 && *aValue != anim.StartValue)
+		{
+			anim.StartTime = now - (aDurationMs * currProgressVal);
+			anim.StartValue = aStartValue;
+			anim.EndValue = aEndValue;
+		}
+		else if (anim.StartTime != 0 && (anim.StartValue != aStartValue || anim.EndValue != aEndValue))
 		{
 			anim.StartTime = now - (aDurationMs - (now - anim.StartTime));
 			anim.StartValue = aStartValue;
