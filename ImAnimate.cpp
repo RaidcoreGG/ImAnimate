@@ -223,7 +223,9 @@ namespace ImGui
 		if (progress > 1.0f) { progress = 1.0f; }
 		else if (progress < 0.0f) { progress = 0.0f; }
 
-		float curveResult = ImAnimate::GetCurveFunc(aCurve)(progress);
+		ImAnimate::PFN_CURVEFUNC curveFunc = ImAnimate::GetCurveFunc(aCurve);
+
+		float curveResult = curveFunc(progress);
 		float result = 0;
 		if (anim.StartValue > anim.EndValue)
 		{
