@@ -148,6 +148,31 @@ namespace ImAnimate
 	};
 
 	static std::map<void*, Animation> Animations;
+
+	///----------------------------------------------------------------------------------------------------
+	/// Clamp:
+	///     Internal function to ensure a value is within range.
+	///----------------------------------------------------------------------------------------------------
+	float Clamp(float& aValue, float& aLimit, float& aLimit2)
+	{
+		if (aLimit > aLimit2)
+		{
+			if (aValue > aLimit) { aValue = aLimit; }
+			else if (aValue < aLimit2) { aValue = aLimit2; }
+		}
+		else if (aLimit < aLimit2)
+		{
+			if (aValue < aLimit) { aValue = aLimit; }
+			else if (aValue > aLimit2) { aValue = aLimit2; }
+		}
+		else /* if (aLimit == aLimit2) */
+		{
+			return aLimit;
+		}
+
+		/* if this is reached, then the value is within range */
+		return aValue;
+	}
 }
 
 namespace ImGui
@@ -161,35 +186,14 @@ namespace ImGui
 			anim.StartTime = 0;
 			return;
 		}
-		else if (aEndValue > aStartValue)
+
+		float clampedVal = ImAnimate::Clamp(*aValue, aStartValue, aEndValue);
+
+		if (clampedVal != *aValue)
 		{
-			if (*aValue > aEndValue)
-			{
-				*aValue = aEndValue;
-				anim.StartTime = 0;
-				return;
-			}
-			else if (*aValue < aStartValue)
-			{
-				*aValue = aStartValue;
-				anim.StartTime = 0;
-				return;
-			}
-		}
-		else if (aEndValue < aStartValue)
-		{
-			if (*aValue < aEndValue)
-			{
-				*aValue = aEndValue;
-				anim.StartTime = 0;
-				return;
-			}
-			else if (*aValue > aStartValue)
-			{
-				*aValue = aStartValue;
-				anim.StartTime = 0;
-				return;
-			}
+			anim.StartTime = 0;
+			*aValue = clampedVal;
+			return;
 		}
 
 		float range = abs(anim.EndValue - anim.StartValue);
@@ -218,7 +222,7 @@ namespace ImGui
 		float progress = (float)((anim.ChangeTime - anim.StartTime) / aDurationMs);
 		if (progress > 1.0f) { progress = 1.0f; }
 		else if (progress < 0.0f) { progress = 0.0f; }
-	
+
 		float curveResult = ImAnimate::GetCurveFunc(aCurve)(progress);
 		float result = 0;
 		if (anim.StartValue > anim.EndValue)
@@ -230,27 +234,13 @@ namespace ImGui
 			result = (curveResult * range) + anim.StartValue;
 		}
 
-		if (anim.EndValue > anim.StartValue)
+		float clampedValPost = ImAnimate::Clamp(result, aStartValue, aEndValue);
+
+		if (clampedValPost != result || clampedValPost == aEndValue)
 		{
-			if (result > anim.EndValue)
-			{
-				result = anim.EndValue;
-			}
-			else if (result < anim.StartValue)
-			{
-				result = anim.StartValue;
-			}
-		}
-		else
-		{
-			if (result < anim.EndValue)
-			{
-				result = anim.EndValue;
-			}
-			else if (result > anim.StartValue)
-			{
-				result = anim.StartValue;
-			}
+			anim.StartTime = 0;
+			*aValue = clampedValPost;
+			return;
 		}
 
 		*aValue = result;
