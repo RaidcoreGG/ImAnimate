@@ -1,3 +1,11 @@
+///----------------------------------------------------------------------------------------------------
+/// Copyright (c) Raidcore.GG - Licensed under the MIT license.
+///
+/// Name         :  ImAnimate.h
+/// Description  :  Immediate mode animations.
+/// Authors      :  K. Bieniek
+///----------------------------------------------------------------------------------------------------
+
 #ifndef IMANIMATE_H
 #define IMANIMATE_H
 
