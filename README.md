@@ -4,6 +4,8 @@ Immediate Mode animation extension for [Dear ImGui](https://github.com/ocornut/i
 You don't need to track any current value, animation start or state.  
 You just provide your start and end values, as well as the duration in milliseconds and your curve.
 
+Each call advances the value by one frame (`ImGui::GetIO().DeltaTime`), so call it once per frame per value. While you don't call it, the animation pauses. Setting the value yourself is fine, the animation continues from there.
+
 ## Usage
 
 **Function Signature**

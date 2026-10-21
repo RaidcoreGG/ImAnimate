@@ -10,7 +10,6 @@
 #define IMANIMATE_H
 
 #include <imgui.h>
-#include <map>
 
 ///----------------------------------------------------------------------------------------------------
 /// ImAnimate Namespace
@@ -61,7 +60,8 @@ namespace ImGui
 {
 	///----------------------------------------------------------------------------------------------------
 	/// Animate:
-	///     Animates a value.
+	///     Advances a value by one frame. Call it once per frame per value; while it is not called, the
+	///     animation pauses.
 	///     - aStartValue: Is the initial value.
 	///     - aEndValue: Is the final value.
 	///     - aDurationMs: Is the duration in milliseconds.

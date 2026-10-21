@@ -9,7 +9,6 @@
 #include "ImAnimate.h"
 
 #include <cmath>
-#include <imgui_internal.h>
 
 #define PI 3.14159f
 
@@ -111,6 +110,97 @@ namespace ImAnimate
 		return aProgress < 0.5f ? (1 - sqrt(1 - powf(2 * aProgress, 2))) / 2.0f : (sqrt(1 - powf(-2 * aProgress + 2, 2)) + 1) / 2.0f;
 	}
 
+	float CurveInv_InSine(float aValue)
+	{
+		return acos(1 - aValue) * 2 / PI;
+	}
+	float CurveInv_OutSine(float aValue)
+	{
+		return asin(aValue) * 2 / PI;
+	}
+	float CurveInv_InOutSine(float aValue)
+	{
+		return acos(1 - 2 * aValue) / PI;
+	}
+
+	float CurveInv_InQuad(float aValue)
+	{
+		return sqrt(aValue);
+	}
+	float CurveInv_OutQuad(float aValue)
+	{
+		return 1 - sqrt(1 - aValue);
+	}
+	float CurveInv_InOutQuad(float aValue)
+	{
+		return aValue < 0.5f ? sqrt(aValue / 2) : 1 - sqrt(2 * (1 - aValue)) / 2.0f;
+	}
+
+	float CurveInv_InCubic(float aValue)
+	{
+		return cbrt(aValue);
+	}
+	float CurveInv_OutCubic(float aValue)
+	{
+		return 1 - cbrt(1 - aValue);
+	}
+	float CurveInv_InOutCubic(float aValue)
+	{
+		return aValue < 0.5f ? cbrt(aValue / 4) : 1 - cbrt(2 * (1 - aValue)) / 2.0f;
+	}
+
+	float CurveInv_InQuart(float aValue)
+	{
+		return powf(aValue, 1 / 4.0f);
+	}
+	float CurveInv_OutQuart(float aValue)
+	{
+		return 1 - powf(1 - aValue, 1 / 4.0f);
+	}
+	float CurveInv_InOutQuart(float aValue)
+	{
+		return aValue < 0.5f ? powf(aValue / 8, 1 / 4.0f) : 1 - powf(2 * (1 - aValue), 1 / 4.0f) / 2.0f;
+	}
+
+	float CurveInv_InQuint(float aValue)
+	{
+		return powf(aValue, 1 / 5.0f);
+	}
+	float CurveInv_OutQuint(float aValue)
+	{
+		return 1 - powf(1 - aValue, 1 / 5.0f);
+	}
+	float CurveInv_InOutQuint(float aValue)
+	{
+		return aValue < 0.5f ? powf(aValue / 16, 1 / 5.0f) : 1 - powf(2 * (1 - aValue), 1 / 5.0f) / 2.0f;
+	}
+
+	float CurveInv_InExpo(float aValue)
+	{
+		return aValue == 0 ? 0 : (log2f(aValue) + 10) / 10;
+	}
+	float CurveInv_OutExpo(float aValue)
+	{
+		return aValue == 1 ? 1 : -log2f(1 - aValue) / 10;
+	}
+	float CurveInv_InOutExpo(float aValue)
+	{
+		return aValue == 0 ? 0 : aValue == 1 ? 1 : aValue < 0.5f ? (log2f(2 * aValue) + 10) / 20 : (10 - log2f(2 - 2 * aValue)) / 20;
+	}
+
+	float CurveInv_InCirc(float aValue)
+	{
+		return sqrt(1 - powf(1 - aValue, 2));
+	}
+	float CurveInv_OutCirc(float aValue)
+	{
+		return 1 - sqrt(1 - powf(aValue, 2));
+	}
+	float CurveInv_InOutCirc(float aValue)
+	{
+		return aValue < 0.5f ? sqrt(1 - powf(1 - 2 * aValue, 2)) / 2.0f : 1 - sqrt(1 - powf(2 * aValue - 1, 2)) / 2.0f;
+	}
+
 	typedef float(*PFN_CURVEFUNC)(float);
 
 	///----------------------------------------------------------------------------------------------------
@@ -123,62 +213,86 @@ namespace ImAnimate
 		{
 			default:
 			case ImAnimate::ECurve::Linear:     return CurveFunc_Linear;
+
 			case ImAnimate::ECurve::InSine:     return CurveFunc_InSine;
 			case ImAnimate::ECurve::OutSine:    return CurveFunc_OutSine;
 			case ImAnimate::ECurve::InOutSine:  return CurveFunc_InOutSine;
+
 			case ImAnimate::ECurve::InQuad:     return CurveFunc_InQuad;
 			case ImAnimate::ECurve::OutQuad:    return CurveFunc_OutQuad;
 			case ImAnimate::ECurve::InOutQuad:  return CurveFunc_InOutQuad;
+
 			case ImAnimate::ECurve::InCubic:    return CurveFunc_InCubic;
 			case ImAnimate::ECurve::OutCubic:   return CurveFunc_OutCubic;
 			case ImAnimate::ECurve::InOutCubic: return CurveFunc_InOutCubic;
+
 			case ImAnimate::ECurve::InQuart:    return CurveFunc_InQuart;
 			case ImAnimate::ECurve::OutQuart:   return CurveFunc_OutQuart;
 			case ImAnimate::ECurve::InOutQuart: return CurveFunc_InOutQuart;
+
 			case ImAnimate::ECurve::InQuint:    return CurveFunc_InQuint;
 			case ImAnimate::ECurve::OutQuint:   return CurveFunc_OutQuint;
 			case ImAnimate::ECurve::InOutQuint: return CurveFunc_InOutQuint;
+
 			case ImAnimate::ECurve::InExpo:     return CurveFunc_InExpo;
 			case ImAnimate::ECurve::OutExpo:    return CurveFunc_OutExpo;
 			case ImAnimate::ECurve::InOutExpo:  return CurveFunc_InOutExpo;
+
 			case ImAnimate::ECurve::InCirc:     return CurveFunc_InCirc;
 			case ImAnimate::ECurve::OutCirc:    return CurveFunc_OutCirc;
 			case ImAnimate::ECurve::InOutCirc:  return CurveFunc_InOutCirc;
 		}
 	}
 
-	struct Animation
+	///----------------------------------------------------------------------------------------------------
+	/// GetCurveInvFunc:
+	///     Internal function to return the inverse of the function correlating to the curve.
+	///----------------------------------------------------------------------------------------------------
+	PFN_CURVEFUNC GetCurveInvFunc(ECurve aCurve)
 	{
-		double StartTime;
-		double ChangeTime;
-		float StartValue;
-		float EndValue;
-	};
+		switch (aCurve)
+		{
+			default:
+			case ImAnimate::ECurve::Linear:     return CurveFunc_Linear;
 
-	static std::map<void*, Animation> Animations;
+			case ImAnimate::ECurve::InSine:     return CurveInv_InSine;
+			case ImAnimate::ECurve::OutSine:    return CurveInv_OutSine;
+			case ImAnimate::ECurve::InOutSine:  return CurveInv_InOutSine;
+
+			case ImAnimate::ECurve::InQuad:     return CurveInv_InQuad;
+			case ImAnimate::ECurve::OutQuad:    return CurveInv_OutQuad;
+			case ImAnimate::ECurve::InOutQuad:  return CurveInv_InOutQuad;
+
+			case ImAnimate::ECurve::InCubic:    return CurveInv_InCubic;
+			case ImAnimate::ECurve::OutCubic:   return CurveInv_OutCubic;
+			case ImAnimate::ECurve::InOutCubic: return CurveInv_InOutCubic;
+
+			case ImAnimate::ECurve::InQuart:    return CurveInv_InQuart;
+			case ImAnimate::ECurve::OutQuart:   return CurveInv_OutQuart;
+			case ImAnimate::ECurve::InOutQuart: return CurveInv_InOutQuart;
+
+			case ImAnimate::ECurve::InQuint:    return CurveInv_InQuint;
+			case ImAnimate::ECurve::OutQuint:   return CurveInv_OutQuint;
+			case ImAnimate::ECurve::InOutQuint: return CurveInv_InOutQuint;
+
+			case ImAnimate::ECurve::InExpo:     return CurveInv_InExpo;
+			case ImAnimate::ECurve::OutExpo:    return CurveInv_OutExpo;
+			case ImAnimate::ECurve::InOutExpo:  return CurveInv_InOutExpo;
+
+			case ImAnimate::ECurve::InCirc:     return CurveInv_InCirc;
+			case ImAnimate::ECurve::OutCirc:    return CurveInv_OutCirc;
+			case ImAnimate::ECurve::InOutCirc:  return CurveInv_InOutCirc;
+		}
+	}
 
 	///----------------------------------------------------------------------------------------------------
-	/// Clamp:
-	///     Internal function to ensure a value is within range.
+	/// Clamp01:
+	///     Internal function to ensure a value is within 0 and 1.
 	///----------------------------------------------------------------------------------------------------
-	float Clamp(const float& aValue, const float& aLimit, const float& aLimit2)
+	float Clamp01(float aValue)
 	{
-		if (aLimit > aLimit2)
-		{
-			if (aValue > aLimit) { return aLimit; }
-			else if (aValue < aLimit2) { return aLimit2; }
-		}
-		else if (aLimit < aLimit2)
-		{
-			if (aValue < aLimit) { return aLimit; }
-			else if (aValue > aLimit2) { return aLimit2; }
-		}
-		else /* if (aLimit == aLimit2) */
-		{
-			return aLimit;
-		}
-
-		/* if this is reached, then the value is within range */
+		if (aValue < 0.0f) { return 0.0f; }
+		if (aValue > 1.0f) { return 1.0f; }
 		return aValue;
 	}
 }
@@ -187,76 +301,32 @@ namespace ImGui
 {
 	void Animate(float aStartValue, float aEndValue, float aDurationMs, float* aValue, ImAnimate::ECurve aCurve)
 	{
-		auto& anim = ImAnimate::Animations[aValue];
-
-		if (*aValue == aEndValue)
+		if (aStartValue == aEndValue || aDurationMs <= 0)
 		{
-			anim.StartTime = 0;
+			*aValue = aEndValue;
 			return;
 		}
 
-		float clampedVal = ImAnimate::Clamp(*aValue, aStartValue, aEndValue);
+		float range = aEndValue - aStartValue;
 
-		if (clampedVal != *aValue)
+		/* The current value is the only state: recover the time progress that produces it. */
+		float progress = ImAnimate::Clamp01(ImAnimate::GetCurveInvFunc(aCurve)(ImAnimate::Clamp01((*aValue - aStartValue) / range)));
+		float step = ImGui::GetIO().DeltaTime * 1000.0f / aDurationMs;
+
+		progress += step;
+
+		if (progress >= 1.0f)
 		{
-			anim.StartTime = 0;
-			*aValue = clampedVal;
+			*aValue = aEndValue;
 			return;
 		}
 
-		float range = abs(aEndValue - aStartValue);
+		float result = aStartValue + ImAnimate::GetCurveFunc(aCurve)(progress) * range;
 
-		float currProgressVal = abs(*aValue - aStartValue) / range;
-
-		ImGuiContext* ctx = ImGui::GetCurrentContext();
-
-		double now = ctx->Time * 1000.0f;
-
-		if (anim.StartTime == 0 && *aValue != anim.StartValue)
+		/* On flat curve sections a frame's step can be below float precision and would never advance. */
+		if (result == *aValue && step > 0.0f)
 		{
-			anim.StartTime = now - (aDurationMs * currProgressVal);
-			anim.StartValue = aStartValue;
-			anim.EndValue = aEndValue;
-		}
-		else if (anim.StartTime != 0 && (anim.StartValue != aStartValue || anim.EndValue != aEndValue))
-		{
-			anim.StartTime = now - (aDurationMs - (now - anim.StartTime));
-			anim.StartValue = aStartValue;
-			anim.EndValue = aEndValue;
-		}
-		else if (anim.StartTime == 0)
-		{
-			anim.StartTime = now;
-			anim.StartValue = aStartValue;
-			anim.EndValue = aEndValue;
-		}
-
-		anim.ChangeTime = now;
-
-		float progress = (float)((anim.ChangeTime - anim.StartTime) / aDurationMs);
-		if (progress > 1.0f) { progress = 1.0f; }
-		else if (progress < 0.0f) { progress = 0.0f; }
-
-		ImAnimate::PFN_CURVEFUNC curveFunc = ImAnimate::GetCurveFunc(aCurve);
-
-		float curveResult = curveFunc(progress);
-		float result = 0;
-		if (anim.StartValue > anim.EndValue)
-		{
-			result = anim.StartValue - (curveResult * range);
-		}
-		else
-		{
-			result = (curveResult * range) + anim.StartValue;
-		}
-
-		float clampedValPost = ImAnimate::Clamp(result, aStartValue, aEndValue);
-
-		if (clampedValPost != result || clampedValPost == aEndValue)
-		{
-			anim.StartTime = 0;
-			*aValue = clampedValPost;
-			return;
+			result = nextafterf(*aValue, aEndValue);
 		}
 
 		*aValue = result;
